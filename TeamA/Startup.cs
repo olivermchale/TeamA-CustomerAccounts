@@ -32,8 +32,6 @@ namespace TeamA
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<AccountsDb>(options => options.UseSqlServer(
                 Configuration.GetConnectionString("localdev")));

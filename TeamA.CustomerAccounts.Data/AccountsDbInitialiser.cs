@@ -8,7 +8,7 @@ namespace TeamA.CustomerAccounts.Data
 {
     public class AccountsDbInitialiser
     {
-        public static async Task SeedDefaultData(AccountsDb context, IServiceProvider services)
+        public static async Task SeedTestData(AccountsDb context, IServiceProvider services)
         {
             if (context.CustomerAccounts.Any())
             {
@@ -72,11 +72,6 @@ namespace TeamA.CustomerAccounts.Data
             accounts.ForEach(a => context.CustomerAccounts.Add(a));
 
             await context.SaveChangesAsync();
-        }
-
-        public object SeedTestData(AccountsDb context, IServiceProvider services)
-        {
-            throw new NotImplementedException();
         }
     }
 }

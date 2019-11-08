@@ -24,6 +24,7 @@ namespace TeamA.CustomerAccounts.Data.Models
 
         public string PhoneNumber { get; set; }
 
-        public bool CanPurchase { get; set; }
+        // Default to true - can be disabled manually whenever necessary
+        public bool CanPurchase { get; set; } = true;
     }
 }

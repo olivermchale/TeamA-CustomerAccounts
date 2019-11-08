@@ -23,7 +23,7 @@
                     context.Database.Migrate();
                     try
                     {
-                        AccountsDbInitialiser.SeedDefaultData(context, services).Wait();
+                        AccountsDbInitialiser.SeedTestData(context, services).Wait();
                     }
                     catch (Exception)
                     {

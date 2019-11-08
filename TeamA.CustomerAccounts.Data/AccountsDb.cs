@@ -29,6 +29,7 @@ namespace TeamA.CustomerAccounts.Data
                 x.Property(c => c.DOB).IsRequired();
                 x.Property(c => c.Address).IsRequired();
                 x.Property(c => c.Postcode).IsRequired();
+                x.Property(c => c.PhoneNumber).IsRequired();
             });
         }
     }
