@@ -26,5 +26,9 @@ namespace TeamA.CustomerAccounts.Data.Models
 
         // Default to true - can be disabled manually whenever necessary
         public bool CanPurchase { get; set; } = true;
+
+        public bool IsDeleted { get; set; } = true;
+
+        public bool IsDeleteRequested { get; set; } = false;
     }
 }
