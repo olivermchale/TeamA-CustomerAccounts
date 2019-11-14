@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TeamA.CustomerAccounts.Data;
+using TeamA.PurchaseOrders.Data;
 
 namespace TeamA
 {
@@ -34,6 +35,8 @@ namespace TeamA
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<AccountsDb>(options => options.UseSqlServer(
+                Configuration.GetConnectionString("localdev")));
+            services.AddDbContext<PurchaseOrdersDb>(options => options.UseSqlServer(
                 Configuration.GetConnectionString("localdev")));
         }
 
