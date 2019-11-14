@@ -12,6 +12,9 @@ namespace TeamA.Controllers
     [ApiController]
     public class AccountsController : Controller
     {
+        // todo: move EF calls out into EF repository
+        // split into two controllers : account / account delete
+        // change post to put.
 
         private readonly AccountsDb _context;
 
@@ -91,6 +94,24 @@ namespace TeamA.Controllers
             }
 
             return NotFound();
+        }
+
+
+        [HttpPost("api/deleteaccount")]
+        public async Task<IActionResult> DeleteAccount(Guid accountId)
+        {
+            var account = await _context.CustomerAccounts.Where(a => a.ID == accountId).FirstOrDefaultAsync();
+
+            if (account != null)
+            {
+                account.IsDeleted = true;
+
+                _context.CustomerAccounts.Update(account);
+
+                await _context.SaveChangesAsync();
+            }
+
+            return Ok();
         }
 
         [HttpPost("api/updatepurchaseability")]
