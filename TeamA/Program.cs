@@ -19,17 +19,7 @@
                 var env = services.GetRequiredService<IHostingEnvironment>();
                 if (env.IsDevelopment())
                 {
-                    var context = services.GetRequiredService<AccountsDb>();
-                    context.Database.Migrate();
-                    try
-                    {
-                        AccountsDbInitialiser.SeedTestData(context, services).Wait();
-                    }
-                    catch (Exception)
-                    {
-                        var logger = services.GetRequiredService<ILogger<Program>>();
-                        logger.LogDebug("Seeding test data failed.");
-                    }
+                    // Do environment specific things here...
                 }
             }
 

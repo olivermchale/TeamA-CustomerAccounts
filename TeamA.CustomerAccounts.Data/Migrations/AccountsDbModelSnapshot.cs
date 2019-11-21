@@ -37,12 +37,17 @@ namespace TeamA.CustomerAccounts.Data.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired();
 
+                    b.Property<bool>("IsDeleteRequested");
+
+                    b.Property<bool>("IsDeleted");
+
                     b.Property<string>("LastName")
                         .IsRequired();
 
                     b.Property<DateTime>("LoggedOnAt");
 
-                    b.Property<string>("PhoneNumber");
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired();
 
                     b.Property<string>("Postcode")
                         .IsRequired();

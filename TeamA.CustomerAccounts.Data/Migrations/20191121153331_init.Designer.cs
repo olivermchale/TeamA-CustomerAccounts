@@ -10,8 +10,8 @@ using TeamA.CustomerAccounts.Data;
 namespace TeamA.CustomerAccounts.Data.Migrations
 {
     [DbContext(typeof(AccountsDb))]
-    [Migration("20191107164134_Initial-Migration")]
-    partial class InitialMigration
+    [Migration("20191121153331_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,12 +39,17 @@ namespace TeamA.CustomerAccounts.Data.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired();
 
+                    b.Property<bool>("IsDeleteRequested");
+
+                    b.Property<bool>("IsDeleted");
+
                     b.Property<string>("LastName")
                         .IsRequired();
 
                     b.Property<DateTime>("LoggedOnAt");
 
-                    b.Property<string>("PhoneNumber");
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired();
 
                     b.Property<string>("Postcode")
                         .IsRequired();
