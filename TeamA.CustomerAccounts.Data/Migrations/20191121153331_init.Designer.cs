@@ -10,8 +10,8 @@ using TeamA.CustomerAccounts.Data;
 namespace TeamA.CustomerAccounts.Data.Migrations
 {
     [DbContext(typeof(AccountsDb))]
-    [Migration("20191113160518_secondmigration")]
-    partial class secondmigration
+    [Migration("20191121153331_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

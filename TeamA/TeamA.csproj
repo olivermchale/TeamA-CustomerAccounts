@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TeamA.CustomerAccounts.Data\TeamA.CustomerAccounts.Data.csproj" />
-    <ProjectReference Include="..\TeamA.PurchaseOrders.Data\TeamA.PurchaseOrders.Data.csproj" />
   </ItemGroup>
 
 </Project>

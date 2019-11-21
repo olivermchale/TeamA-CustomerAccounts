@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TeamA.CustomerAccounts.Data.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,8 +19,10 @@ namespace TeamA.CustomerAccounts.Data.Migrations
                     Postcode = table.Column<string>(nullable: false),
                     DOB = table.Column<DateTime>(nullable: false),
                     LoggedOnAt = table.Column<DateTime>(nullable: false),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    CanPurchase = table.Column<bool>(nullable: false)
+                    PhoneNumber = table.Column<string>(nullable: false),
+                    CanPurchase = table.Column<bool>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    IsDeleteRequested = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

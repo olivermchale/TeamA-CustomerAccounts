@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamA", "TeamA\TeamA.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamA.CustomerAccounts.Data", "TeamA.CustomerAccounts.Data\TeamA.CustomerAccounts.Data.csproj", "{E1988A40-A10C-437D-84DD-92BE47FB8809}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamA.PurchaseOrders.Data", "TeamA.PurchaseOrders.Data\TeamA.PurchaseOrders.Data.csproj", "{9E9B481F-D977-45C5-AED1-955A054077F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamA.CustomerAccounts.API", "TeamA.CustomerAccounts.API\TeamA.CustomerAccounts.API.csproj", "{C0D8A9E7-9DD8-4249-9CA1-4117C93E6080}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{E1988A40-A10C-437D-84DD-92BE47FB8809}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1988A40-A10C-437D-84DD-92BE47FB8809}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1988A40-A10C-437D-84DD-92BE47FB8809}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9E9B481F-D977-45C5-AED1-955A054077F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9E9B481F-D977-45C5-AED1-955A054077F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9E9B481F-D977-45C5-AED1-955A054077F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9E9B481F-D977-45C5-AED1-955A054077F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0D8A9E7-9DD8-4249-9CA1-4117C93E6080}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0D8A9E7-9DD8-4249-9CA1-4117C93E6080}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0D8A9E7-9DD8-4249-9CA1-4117C93E6080}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0D8A9E7-9DD8-4249-9CA1-4117C93E6080}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
