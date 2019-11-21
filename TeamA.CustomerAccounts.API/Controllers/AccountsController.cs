@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TeamA.CustomerAccounts.Data;
 using TeamA.CustomerAccounts.Data.Models;
 
-namespace TeamA.Controllers
+namespace TeamA.CustomerAccounts.API.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
-    public class AccountsController : Controller
+    public class AccountsController : ControllerBase
     {
         // todo: move EF calls out into EF repository
         // split into two controllers : account / account delete
@@ -23,7 +25,7 @@ namespace TeamA.Controllers
             _context = context;
         }
 
-        [HttpGet("api/accounts")]
+        [HttpGet("getCustomers")]
         public async Task<IActionResult> GetAccounts()
         {
             var accounts = await _context.CustomerAccounts
@@ -45,7 +47,7 @@ namespace TeamA.Controllers
             return Ok(accounts);
         }
 
-        [HttpGet("api/account")]
+        [HttpGet("getCustomer")]
         public async Task<IActionResult> GetAccount(Guid accountId)
         {
             var account = await _context.CustomerAccounts
@@ -66,7 +68,7 @@ namespace TeamA.Controllers
             return Ok(account);
         }
 
-        [HttpPost("api/requestaccountdelete")]
+        [HttpPost("requestAccountDelete")]
         public async Task<IActionResult> RequestAccountDelete(Guid accountId)
         {
             var account = await _context.CustomerAccounts.Where(a => a.ID == accountId).FirstOrDefaultAsync();
@@ -83,7 +85,7 @@ namespace TeamA.Controllers
             return Ok();
         }
 
-        [HttpGet("api/requesteddeletes")]
+        [HttpGet("getRequestedDeletes")]
         public async Task<IActionResult> GetRequestedDeletes()
         {
             var accounts = await _context.CustomerAccounts.Where(a => a.IsDeleteRequested == true).ToListAsync();
@@ -97,7 +99,7 @@ namespace TeamA.Controllers
         }
 
 
-        [HttpPost("api/deleteaccount")]
+        [HttpPost("deleteAccount")]
         public async Task<IActionResult> DeleteAccount(Guid accountId)
         {
             var account = await _context.CustomerAccounts.Where(a => a.ID == accountId).FirstOrDefaultAsync();
@@ -114,7 +116,7 @@ namespace TeamA.Controllers
             return Ok();
         }
 
-        [HttpPost("api/updatepurchaseability")]
+        [HttpPost("updatePurchaseAbility")]
         public async Task<IActionResult> UpdatePurchaseAbility(Guid accountId, bool canPurchase)
         {
             var account = await _context.CustomerAccounts.Where(a => a.ID == accountId).FirstOrDefaultAsync();
