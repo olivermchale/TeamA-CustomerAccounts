@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TeamA.CustomerAccounts.Data;
-using TeamA.CustomerAccounts.Data.Models;
+using TeamA.CustomerAccounts.Models;
+using TeamA.CustomerAccounts.Services;
 
 namespace TeamA.CustomerAccounts.API.Controllers
 {
@@ -14,35 +15,18 @@ namespace TeamA.CustomerAccounts.API.Controllers
     [ApiController]
     public class AccountsController : ControllerBase
     {
-        // todo: move EF calls out into EF repository
-        // split into two controllers : account / account delete
-        // change post to put.
 
-        private readonly AccountsDb _context;
+        private readonly IAccountsService _accountsService;
 
-        public AccountsController(AccountsDb context)
+        public AccountsController(IAccountsService accountsService)
         {
-            _context = context;
+            _accountsService = accountsService;
         }
 
         [HttpGet("getCustomers")]
         public async Task<IActionResult> GetAccounts()
         {
-            var accounts = await _context.CustomerAccounts
-                                                    .Select(b => new CustomerAccount
-                                                    {
-                                                        ID = b.ID,
-                                                        FirstName = b.FirstName,
-                                                        LastName = b.LastName,
-                                                        Email = b.Email,
-                                                        Address = b.Address,
-                                                        Postcode = b.Postcode,
-                                                        DOB = b.DOB,
-                                                        LoggedOnAt = b.LoggedOnAt,
-                                                        PhoneNumber = b.PhoneNumber,
-                                                        CanPurchase = b.CanPurchase,
-                                                    })
-                                                    .ToListAsync();
+            var accounts = await _accountsService.GetAccounts();
 
             return Ok(accounts);
         }
@@ -50,45 +34,28 @@ namespace TeamA.CustomerAccounts.API.Controllers
         [HttpGet("getCustomer")]
         public async Task<IActionResult> GetAccount(Guid accountId)
         {
-            var account = await _context.CustomerAccounts
-                                            .Select(b => new CustomerAccount
-                                            {
-                                                ID = b.ID,
-                                                FirstName = b.FirstName,
-                                                LastName = b.LastName,
-                                                Email = b.Email,
-                                                Address = b.Address,
-                                                Postcode = b.Postcode,
-                                                DOB = b.DOB,
-                                                LoggedOnAt = b.LoggedOnAt,
-                                                PhoneNumber = b.PhoneNumber,
-                                                CanPurchase = b.CanPurchase,
-                                            }).Where(a => a.ID == accountId).FirstOrDefaultAsync();
+            var account = await _accountsService.GetAccount(accountId);
 
             return Ok(account);
         }
 
-        [HttpPost("requestAccountDelete")]
+        [HttpPut("requestAccountDelete")]
         public async Task<IActionResult> RequestAccountDelete(Guid accountId)
         {
-            var account = await _context.CustomerAccounts.Where(a => a.ID == accountId).FirstOrDefaultAsync();
-
-            if (account != null)
+            var success = await _accountsService.RequestAccountDelete (accountId);
+            if (success)
             {
-                account.IsDeleteRequested = true;
-
-                _context.CustomerAccounts.Update(account);
-
-                await _context.SaveChangesAsync();
+                return Ok();
             }
 
-            return Ok();
+            //todo: proper error code?
+            return NotFound();
         }
 
         [HttpGet("getRequestedDeletes")]
         public async Task<IActionResult> GetRequestedDeletes()
         {
-            var accounts = await _context.CustomerAccounts.Where(a => a.IsDeleteRequested == true).ToListAsync();
+            var accounts = await _accountsService.GetRequestedDeletes();
 
             if (accounts != null)
             {
@@ -99,38 +66,31 @@ namespace TeamA.CustomerAccounts.API.Controllers
         }
 
 
-        [HttpPost("deleteAccount")]
+        [HttpPut("deleteAccount")]
         public async Task<IActionResult> DeleteAccount(Guid accountId)
         {
-            var account = await _context.CustomerAccounts.Where(a => a.ID == accountId).FirstOrDefaultAsync();
+            var success = await _accountsService.DeleteAccount(accountId);
 
-            if (account != null)
+            if(success)
             {
-                account.IsDeleted = true;
-
-                _context.CustomerAccounts.Update(account);
-
-                await _context.SaveChangesAsync();
+                return Ok();
             }
 
-            return Ok();
+            //todo: proper error code?
+            return NotFound();
         }
 
-        [HttpPost("updatePurchaseAbility")]
+        [HttpPut("updatePurchaseAbility")]
         public async Task<IActionResult> UpdatePurchaseAbility(Guid accountId, bool canPurchase)
         {
-            var account = await _context.CustomerAccounts.Where(a => a.ID == accountId).FirstOrDefaultAsync();
-
-            if (account != null)
+            var success = await _accountsService.UpdatePurchaseAbility(accountId, canPurchase);
+            if (success)
             {
-                account.CanPurchase = canPurchase;
-
-                _context.CustomerAccounts.Update(account);
-
-                await _context.SaveChangesAsync();
+                return Ok();
             }
 
-            return Ok();
+            //todo: proper error code?
+            return NotFound();
         }
     }
 }

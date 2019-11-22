@@ -13,6 +13,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TeamA.CustomerAccounts.Data\TeamA.CustomerAccounts.Data.csproj" />
+    <ProjectReference Include="..\TeamA.CustomerAccounts.Models\TeamA.CustomerAccounts.Models.csproj" />
+    <ProjectReference Include="..\TeamA.CustomerAccounts.Repository\TeamA.CustomerAccounts.Repository.csproj" />
+    <ProjectReference Include="..\TeamA.CustomerAccounts.Services\TeamA.CustomerAccounts.Services.csproj" />
   </ItemGroup>
 
 </Project>

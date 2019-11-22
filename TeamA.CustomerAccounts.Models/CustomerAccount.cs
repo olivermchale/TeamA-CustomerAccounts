@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace TeamA.CustomerAccounts.Data.Models
+namespace TeamA.CustomerAccounts.Models
 {
     public class CustomerAccount
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using TeamA.CustomerAccounts.Data.Models;
+using TeamA.CustomerAccounts.Models;
 
 namespace TeamA.CustomerAccounts.Data
 {
