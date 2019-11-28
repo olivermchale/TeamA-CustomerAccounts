@@ -30,7 +30,7 @@ namespace TeamA.CustomerAccounts.Data
                 x.Property(c => c.Address).IsRequired();
                 x.Property(c => c.Postcode).IsRequired();
                 x.Property(c => c.PhoneNumber).IsRequired();
-                x.Property(c => c.IsDeleted).IsRequired();
+                x.Property(c => c.IsActive).IsRequired();
                 x.Property(c => c.IsDeleteRequested).IsRequired();
             });
         }
