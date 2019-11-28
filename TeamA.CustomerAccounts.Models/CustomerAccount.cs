@@ -4,7 +4,7 @@ namespace TeamA.CustomerAccounts.Models
 {
     public class CustomerAccount
     {
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
 
         public string FirstName { get; set; }
 
@@ -25,7 +25,7 @@ namespace TeamA.CustomerAccounts.Models
         // Default to true - can be disabled manually whenever necessary
         public bool CanPurchase { get; set; } = true;
 
-        public bool IsDeleted { get; set; } = true;
+        public bool IsActive { get; set; } = true;
 
         public bool IsDeleteRequested { get; set; } = false;
     }

@@ -147,6 +147,7 @@ namespace TeamA.CustomerAccounts.Repository
                     account.LastName = updatedUser.LastName;
                     account.Address = updatedUser.Address;
                     account.Postcode = updatedUser.Postcode;
+                    account.Email = updatedUser.Email;
                     account.PhoneNumber = updatedUser.PhoneNumber;
 
                     await _context.SaveChangesAsync();
