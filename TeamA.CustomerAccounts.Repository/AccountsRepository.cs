@@ -24,7 +24,7 @@ namespace TeamA.CustomerAccounts.Repository
             return await _context.CustomerAccounts
                                                   .Select(b => new CustomerAccount
                                                     {
-                                                        ID = b.ID,
+                                                        Id = b.Id,
                                                         FirstName = b.FirstName,
                                                         LastName = b.LastName,
                                                         Email = b.Email,
@@ -43,7 +43,7 @@ namespace TeamA.CustomerAccounts.Repository
             return await _context.CustomerAccounts
                                             .Select(b => new CustomerAccount
                                             {
-                                                ID = b.ID,
+                                                Id = b.Id,
                                                 FirstName = b.FirstName,
                                                 LastName = b.LastName,
                                                 Email = b.Email,
@@ -53,16 +53,16 @@ namespace TeamA.CustomerAccounts.Repository
                                                 LoggedOnAt = b.LoggedOnAt,
                                                 PhoneNumber = b.PhoneNumber,
                                                 CanPurchase = b.CanPurchase,
-                                                IsDeleted = b.IsDeleted,
+                                                IsActive = b.IsActive,
                                                 IsDeleteRequested = b.IsDeleteRequested                                 
-                                            }).Where(a => a.ID == accountId).FirstOrDefaultAsync();
+                                            }).Where(a => a.Id == accountId).FirstOrDefaultAsync();
         }
 
         public async Task<bool> RequestAccountDelete(Guid accountId)
         {
             try
             {
-                var account = await _context.CustomerAccounts.Where(a => a.ID == accountId).FirstOrDefaultAsync();
+                var account = await _context.CustomerAccounts.Where(a => a.Id == accountId).FirstOrDefaultAsync();
 
                 if (account != null)
                 {
@@ -90,12 +90,12 @@ namespace TeamA.CustomerAccounts.Repository
 
         public async Task<bool> DeleteAccount(Guid accountId)
         {
-            var account = await _context.CustomerAccounts.Where(a => a.ID == accountId).FirstOrDefaultAsync();
+            var account = await _context.CustomerAccounts.Where(a => a.Id == accountId).FirstOrDefaultAsync();
             try
             {
                 if (account != null)
                 {
-                    account.IsDeleted = true;
+                    account.IsActive = true;
 
                     _context.CustomerAccounts.Update(account);
 
@@ -114,7 +114,7 @@ namespace TeamA.CustomerAccounts.Repository
 
         public async Task<bool> UpdatePurchaseAbility(Guid accountId, bool canPurchase)
         {
-            var account = await _context.CustomerAccounts.Where(a => a.ID == accountId).FirstOrDefaultAsync();
+            var account = await _context.CustomerAccounts.Where(a => a.Id == accountId).FirstOrDefaultAsync();
             try
             {
                 if (account != null)
@@ -138,7 +138,7 @@ namespace TeamA.CustomerAccounts.Repository
 
         public async Task<bool> UpdateUser(UpdateUserVm updatedUser)
         {
-            var account = await _context.CustomerAccounts.Where(c => c.ID == updatedUser.Id).FirstOrDefaultAsync();
+            var account = await _context.CustomerAccounts.Where(c => c.Id == updatedUser.Id).FirstOrDefaultAsync();
             try
             {
                 if (account != null)
