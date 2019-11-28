@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TeamA.CustomerAccounts.Data;
 using TeamA.CustomerAccounts.Models;
+using TeamA.CustomerAccounts.Models.ViewModels;
 using TeamA.CustomerAccounts.Services;
 
 namespace TeamA.CustomerAccounts.Repository
@@ -133,6 +134,31 @@ namespace TeamA.CustomerAccounts.Repository
             }
             return false;
 
+        }
+
+        public async Task<bool> UpdateUser(UpdateUserVm updatedUser)
+        {
+            var account = await _context.CustomerAccounts.Where(c => c.ID == updatedUser.Id).FirstOrDefaultAsync();
+            try
+            {
+                if (account != null)
+                {
+                    account.FirstName = updatedUser.FirstName;
+                    account.LastName = updatedUser.LastName;
+                    account.Address = updatedUser.Address;
+                    account.Postcode = updatedUser.Postcode;
+                    account.PhoneNumber = updatedUser.PhoneNumber;
+
+                    await _context.SaveChangesAsync();
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                //todo: exception handling
+            }
+            return false;
         }
 
     }
