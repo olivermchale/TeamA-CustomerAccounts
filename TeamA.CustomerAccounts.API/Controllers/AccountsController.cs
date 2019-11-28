@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TeamA.CustomerAccounts.Data;
 using TeamA.CustomerAccounts.Models;
+using TeamA.CustomerAccounts.Models.ViewModels;
 using TeamA.CustomerAccounts.Services;
 
 namespace TeamA.CustomerAccounts.API.Controllers
@@ -92,6 +93,17 @@ namespace TeamA.CustomerAccounts.API.Controllers
             }
 
             //todo: proper error code?
+            return NotFound();
+        }
+
+        [HttpPut("updateUser")]
+        public async Task<IActionResult> UpdateUser(UpdateUserVm updatedUser)
+        {
+            var success = await _accountsService.UpdateUser(updatedUser);
+            if(success)
+            {
+                return Ok();
+            }
             return NotFound();
         }
     }
