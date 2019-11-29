@@ -8,12 +8,12 @@ namespace TeamA.CustomerAccounts.Services
 {
     public interface IAccountsService
     {
-        Task<List<CustomerAccount>> GetAccounts();
-        Task<CustomerAccount> GetAccount(Guid accountId);
+        Task<CustomerAccountListVm> GetAccounts();
+        Task<CustomerAccountDetailVm> GetAccount(Guid accountId);
         Task<bool> RequestAccountDelete(Guid accountId);
-        Task<List<CustomerAccount>> GetRequestedDeletes();
+        Task<CustomerAccountListVm> GetRequestedDeletes();
         Task<bool> DeleteAccount(Guid accountId);
-        Task<bool> UpdatePurchaseAbility(Guid accountId, bool canPurchase);
-        Task<bool> UpdateUser(UpdateUserVm updatedUser);
+        Task<bool> UpdatePurchaseAbility(UpdatePurchaseAbilityVm updatePurchaseAbilityVm);
+        Task<bool> UpdateUser(UpdateUserVm updatedUserVm);
     }
 }

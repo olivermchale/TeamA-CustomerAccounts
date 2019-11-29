@@ -45,7 +45,7 @@ namespace TeamA.CustomerAccounts.API.Controllers
         [HttpPut("requestAccountDelete")]
         public async Task<IActionResult> RequestAccountDelete(Guid accountId)
         {
-            var success = await _accountsService.RequestAccountDelete (accountId);
+            var success = await _accountsService.RequestAccountDelete(accountId);
             if (success)
             {
                 return Ok();
@@ -84,9 +84,9 @@ namespace TeamA.CustomerAccounts.API.Controllers
         }
 
         [HttpPut("updatePurchaseAbility")]
-        public async Task<IActionResult> UpdatePurchaseAbility(Guid accountId, bool canPurchase)
+        public async Task<IActionResult> UpdatePurchaseAbility(UpdatePurchaseAbilityVm updatedPurchaseAbility)
         {
-            var success = await _accountsService.UpdatePurchaseAbility(accountId, canPurchase);
+            var success = await _accountsService.UpdatePurchaseAbility(updatedPurchaseAbility);
             if (success)
             {
                 return Ok();
