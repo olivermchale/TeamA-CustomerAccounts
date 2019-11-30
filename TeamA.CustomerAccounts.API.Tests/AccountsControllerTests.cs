@@ -19,6 +19,7 @@ namespace Tests
         private CustomerAccountListVm _stubAccountList;
         private UpdatePurchaseAbilityVm _stubEnableUpdatePurchaseAbilityVm;
         private UpdatePurchaseAbilityVm _stubDisableUpdatePurchaseAbilityVm;
+        private UpdateUserVm _stubUpdateUserVm;
 
 
 
@@ -70,6 +71,16 @@ namespace Tests
             {
                 AccountId = new Guid("58dfa3d3-83e3-490f-97f4-3290037ea365"),
                 PurchaseAbility = true
+            };
+            _stubUpdateUserVm = new UpdateUserVm()
+            {
+                Id = new Guid("58dfa3d3-83e3-490f-97f4-3290037ea365"),
+                Address = "Test Avenue",
+                Email = "Test@Unit.com@",
+                FirstName = "Unit",
+                LastName = "Test",
+                PhoneNumber = "230954822412",
+                Postcode = "T3ST 101"
             };
 
         }
@@ -286,5 +297,39 @@ namespace Tests
             Assert.IsNotNull(result);
             Assert.AreEqual(result.StatusCode, 500);
         }
+
+        [Test]
+        public async Task UpdateUser_Valid()
+        {
+            // Arrange
+            _mockAccountsService.Setup(c => c.UpdateUser(It.IsAny<UpdateUserVm>()))
+                .ReturnsAsync(true);
+
+            // Act
+            var result = await _accountsController.UpdateUser(_stubUpdateUserVm) as OkObjectResult;
+
+            // Assert
+            Assert.AreEqual(result.StatusCode, 200);
+            Assert.IsNotNull(result.Value);
+            Assert.IsInstanceOf<bool>(result.Value);
+            Assert.AreEqual(result.Value, true);
+        }
+
+        [Test]
+        public async Task UpdateUser_Error_Gives500()
+        {
+            // Arrange
+            _mockAccountsService.Setup(c => c.UpdateUser(It.IsAny<UpdateUserVm>()))
+                .ReturnsAsync(false);
+
+            // Act
+            var result = await _accountsController.UpdateUser(_stubUpdateUserVm) as StatusCodeResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(result.StatusCode, 500);
+        }
+
+
     }
 }
