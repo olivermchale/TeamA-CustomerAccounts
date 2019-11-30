@@ -30,13 +30,21 @@ namespace TeamA.CustomerAccounts.API.Controllers
         public async Task<IActionResult> GetAccounts()
         {
             var accounts = await _accountsService.GetAccounts();
+            if(accounts != null)
+            {
+                return Ok(accounts);
+            }
+            return NotFound();
 
-            return Ok(accounts);
         }
 
         [HttpGet("getCustomer")]
         public async Task<IActionResult> GetAccount(Guid accountId)
         {
+            if(accountId == null || accountId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(accountId));
+            }
             var account = await _accountsService.GetAccount(accountId);
 
             return Ok(account);
@@ -45,14 +53,19 @@ namespace TeamA.CustomerAccounts.API.Controllers
         [HttpPut("requestAccountDelete")]
         public async Task<IActionResult> RequestAccountDelete(Guid accountId)
         {
+            if (accountId == null || accountId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(accountId));
+            }
             var success = await _accountsService.RequestAccountDelete(accountId);
             if (success)
             {
-                return Ok();
+                return Ok(true);
             }
 
             //todo: proper error code?
-            return NotFound();
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+
         }
 
         [HttpGet("getRequestedDeletes")]
@@ -76,11 +89,11 @@ namespace TeamA.CustomerAccounts.API.Controllers
 
             if(success)
             {
-                return Ok();
+                return Ok(true);
             }
 
             //todo: proper error code?
-            return NotFound();
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
 
         [HttpPut("updatePurchaseAbility")]
@@ -89,11 +102,11 @@ namespace TeamA.CustomerAccounts.API.Controllers
             var success = await _accountsService.UpdatePurchaseAbility(updatedPurchaseAbility);
             if (success)
             {
-                return Ok();
+                return Ok(true);
             }
 
             //todo: proper error code?
-            return NotFound();
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
 
         [HttpPut("updateUser")]
@@ -102,9 +115,9 @@ namespace TeamA.CustomerAccounts.API.Controllers
             var success = await _accountsService.UpdateUser(updatedUser);
             if(success)
             {
-                return Ok();
+                return Ok(true);
             }
-            return NotFound();
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
     }
 }

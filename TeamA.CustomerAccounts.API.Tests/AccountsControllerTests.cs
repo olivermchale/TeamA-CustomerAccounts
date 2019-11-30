@@ -17,6 +17,8 @@ namespace Tests
         private CustomerAccountDetailVm _stubCustomerAccountDetail;
         private CustomerAccountListItemVm _stubCustomerAccountListItem;
         private CustomerAccountListVm _stubAccountList;
+        private UpdatePurchaseAbilityVm _stubEnableUpdatePurchaseAbilityVm;
+        private UpdatePurchaseAbilityVm _stubDisableUpdatePurchaseAbilityVm;
 
 
 
@@ -58,6 +60,18 @@ namespace Tests
             {
                 CustomerAccounts = stubListItems
             };
+
+            _stubEnableUpdatePurchaseAbilityVm = new UpdatePurchaseAbilityVm()
+            {
+                AccountId = new Guid("58dfa3d3-83e3-490f-97f4-3290037ea364"),
+                PurchaseAbility = true
+            };
+            _stubDisableUpdatePurchaseAbilityVm = new UpdatePurchaseAbilityVm()
+            {
+                AccountId = new Guid("58dfa3d3-83e3-490f-97f4-3290037ea365"),
+                PurchaseAbility = true
+            };
+
         }
 
         [Test]
@@ -80,6 +94,20 @@ namespace Tests
             Assert.AreEqual(result.Value, _stubAccountList);
         }
 
+        public async Task GetAccounts_NoAccounts_NotFound()
+        {
+            // Arrange 
+            _mockAccountsService.Setup(c => c.GetAccounts())
+                .ReturnsAsync(() => null);
+
+            // Act
+            var result = await _accountsController.GetAccounts() as NotFoundResult;
+
+            // Assert
+            Assert.AreEqual(404, result.StatusCode);
+
+        }
+
         [Test]
         public async Task GetAccount_Valid()
         {
@@ -88,13 +116,175 @@ namespace Tests
                 .ReturnsAsync(_stubCustomerAccountDetail);
 
             // Act
-            var result = await _accountsController.GetAccount(new Guid()) as OkObjectResult;
+            var result = await _accountsController.GetAccount(Guid.Parse("58dfa3d3-83e3-490f-97f4-3290037ea364")) as OkObjectResult;
 
             // Assert
             Assert.AreEqual(result.StatusCode, 200);
             Assert.IsNotNull(result.Value);
             Assert.IsInstanceOf<CustomerAccountDetailVm>(result.Value);
             Assert.AreEqual(result.Value, _stubCustomerAccountDetail);
+        }
+
+        [Test]
+        public void GetAccount_NoID_Throws()
+        {
+            // Arrange is done by setup, no mocking required as exception should get thrown.
+
+            // Act and Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => _accountsController.GetAccount(Guid.Empty));
+        }
+
+        [Test]
+        public async Task RequestAccountDelete_Valid()
+        {
+            // Arrange
+            _mockAccountsService.Setup(c => c.RequestAccountDelete(It.IsAny<Guid>()))
+                .ReturnsAsync(true);
+
+            // Act
+            var result = await _accountsController.RequestAccountDelete(Guid.Parse("58dfa3d3-83e3-490f-97f4-3290037ea364")) as OkObjectResult;
+
+            // Assert
+            Assert.AreEqual(result.StatusCode, 200);
+            Assert.IsNotNull(result.Value);
+            Assert.IsInstanceOf<bool>(result.Value);
+            Assert.AreEqual(result.Value, true);
+        }
+
+        [Test]
+        public async Task RequestAccountDelete_NoID_Throws()
+        {
+            // Arrange is done by setup, no mocking required as exception should get thrown.
+
+            // Act and Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => _accountsController.RequestAccountDelete(Guid.Empty));
+        }
+
+        [Test]
+        public async Task RequestAccountDelete_ValidId_Failed()
+        {
+            // Arrange
+            _mockAccountsService.Setup(c => c.RequestAccountDelete(It.IsAny<Guid>()))
+                .ReturnsAsync(false);
+
+            // Act
+            var result = await _accountsController.RequestAccountDelete(Guid.Parse("58dfa3d3-83e3-490f-97f4-3290037ea364")) as StatusCodeResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(result.StatusCode, 500);
+        }
+
+        [Test]
+        public async Task GetDeletedAccounts_Valid()
+        {
+            // Arrange
+            _mockAccountsService.Setup(c => c.GetRequestedDeletes())
+                .ReturnsAsync(_stubAccountList);
+
+            // Act
+            var result = await _accountsController.GetRequestedDeletes() as OkObjectResult;
+
+            // Assert
+            Assert.AreEqual(result.StatusCode, 200);
+            Assert.IsNotNull(result.Value);
+            Assert.IsInstanceOf<CustomerAccountListVm>(result.Value);
+            Assert.AreEqual(result.Value, _stubAccountList);
+        }
+
+        [Test]
+        public async Task GetDeletedAccounts_NoAccounts_NotFound()
+        {
+            // Arrange
+            _mockAccountsService.Setup(c => c.GetRequestedDeletes())
+                .ReturnsAsync(() => null);
+
+            // Act
+            var result = await _accountsController.GetRequestedDeletes() as NotFoundResult;
+
+            // Assert
+            Assert.AreEqual(404, result.StatusCode);
+        }
+
+        [Test]
+        public async Task DeleteAccount_Valid()
+        {
+            // Arrange
+            _mockAccountsService.Setup(c => c.DeleteAccount(It.IsAny<Guid>()))
+                .ReturnsAsync(true);
+
+            // Act
+            var result = await _accountsController.DeleteAccount(Guid.Parse("58dfa3d3-83e3-490f-97f4-3290037ea364")) as OkObjectResult;
+
+            // Assert
+            Assert.AreEqual(result.StatusCode, 200);
+            Assert.IsNotNull(result.Value);
+            Assert.IsInstanceOf<bool>(result.Value);
+            Assert.AreEqual(result.Value, true);
+        }
+
+        [Test]
+        public async Task DeleteAccount_Fails_Gives500()
+        {
+            // Arrange
+            _mockAccountsService.Setup(c => c.DeleteAccount(It.IsAny<Guid>()))
+                .ReturnsAsync(false);
+
+            // Act
+            var result = await _accountsController.DeleteAccount(Guid.Parse("58dfa3d3-83e3-490f-97f4-3290037ea364")) as StatusCodeResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(result.StatusCode, 500);
+        }
+
+        [Test]
+        public async Task UpdatePurchaseAbility_EnableAbility_Valid()
+        {
+            // Arrange
+            _mockAccountsService.Setup(c => c.UpdatePurchaseAbility(It.IsAny<UpdatePurchaseAbilityVm>()))
+                .ReturnsAsync(true);
+
+            // Act
+            var result = await _accountsController.UpdatePurchaseAbility(_stubEnableUpdatePurchaseAbilityVm) as OkObjectResult;
+
+            // Assert
+            Assert.AreEqual(result.StatusCode, 200);
+            Assert.IsNotNull(result.Value);
+            Assert.IsInstanceOf<bool>(result.Value);
+            Assert.AreEqual(result.Value, true);
+        }
+
+        [Test]
+        public async Task UpdatePurchaseAbility_DisableAbility_Valid()
+        {
+            // Arrange
+            _mockAccountsService.Setup(c => c.UpdatePurchaseAbility(It.IsAny<UpdatePurchaseAbilityVm>()))
+                .ReturnsAsync(true);
+
+            // Act
+            var result = await _accountsController.UpdatePurchaseAbility(_stubDisableUpdatePurchaseAbilityVm) as OkObjectResult;
+
+            // Assert
+            Assert.AreEqual(result.StatusCode, 200);
+            Assert.IsNotNull(result.Value);
+            Assert.IsInstanceOf<bool>(result.Value);
+            Assert.AreEqual(result.Value, true);
+        }
+
+        [Test]
+        public async Task UpdatePurchaseAbility_Error_Gives500()
+        {
+            // Arrange
+            _mockAccountsService.Setup(c => c.UpdatePurchaseAbility(It.IsAny<UpdatePurchaseAbilityVm>()))
+                .ReturnsAsync(false);
+
+            // Act
+            var result = await _accountsController.UpdatePurchaseAbility(_stubDisableUpdatePurchaseAbilityVm) as StatusCodeResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(result.StatusCode, 500);
         }
     }
 }
