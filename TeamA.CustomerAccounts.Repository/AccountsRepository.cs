@@ -29,6 +29,7 @@ namespace TeamA.CustomerAccounts.Repository
                                                         LastName = b.LastName,
                                                         Email = b.Email,
                                                         Address = b.Address,
+                                                        IsDeleteRequested = b.IsDeleteRequested,
                                                     })
                                                     .ToListAsync();
 
@@ -93,6 +94,7 @@ namespace TeamA.CustomerAccounts.Repository
                                                       LastName = b.LastName,
                                                       Email = b.Email,
                                                       Address = b.Address,
+                                                      IsDeleteRequested = b.IsDeleteRequested,
                                                   }).Where(b => b.IsDeleteRequested == true)
                                                     .ToListAsync();
 
@@ -109,7 +111,7 @@ namespace TeamA.CustomerAccounts.Repository
             {
                 if (account != null)
                 {
-                    account.IsActive = true;
+                    account.IsActive = false;
 
                     _context.CustomerAccounts.Update(account);
 
