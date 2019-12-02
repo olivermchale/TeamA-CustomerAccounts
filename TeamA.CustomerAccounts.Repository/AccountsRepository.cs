@@ -19,29 +19,30 @@ namespace TeamA.CustomerAccounts.Repository
             _context = context;
         }
 
-        public async Task<List<CustomerAccount>> GetAccounts()
+        public async Task<CustomerAccountListVm> GetAccounts()
         {
-            return await _context.CustomerAccounts
-                                                  .Select(b => new CustomerAccount
+            var accounts = await _context.CustomerAccounts
+                                                  .Select(b => new CustomerAccountListItemVm
                                                     {
                                                         Id = b.Id,
                                                         FirstName = b.FirstName,
                                                         LastName = b.LastName,
                                                         Email = b.Email,
                                                         Address = b.Address,
-                                                        Postcode = b.Postcode,
-                                                        DOB = b.DOB,
-                                                        LoggedOnAt = b.LoggedOnAt,
-                                                        PhoneNumber = b.PhoneNumber,
-                                                        CanPurchase = b.CanPurchase,
+                                                        IsDeleteRequested = b.IsDeleteRequested,
                                                     })
                                                     .ToListAsync();
+
+            return new CustomerAccountListVm
+            {
+                CustomerAccounts = accounts
+            };
         }
 
-        public async Task<CustomerAccount> GetAccount(Guid accountId)
+        public async Task<CustomerAccountDetailVm> GetAccount(Guid accountId)
         {
             return await _context.CustomerAccounts
-                                            .Select(b => new CustomerAccount
+                                            .Select(b => new CustomerAccountDetailVm
                                             {
                                                 Id = b.Id,
                                                 FirstName = b.FirstName,
@@ -83,9 +84,24 @@ namespace TeamA.CustomerAccounts.Repository
 
         }
 
-        public async Task<List<CustomerAccount>> GetRequestedDeletes()
+        public async Task<CustomerAccountListVm> GetRequestedDeletes()
         {
-            return await _context.CustomerAccounts.Where(a => a.IsDeleteRequested == true).ToListAsync();
+            var accounts = await _context.CustomerAccounts
+                                                  .Select(b => new CustomerAccountListItemVm
+                                                  {
+                                                      Id = b.Id,
+                                                      FirstName = b.FirstName,
+                                                      LastName = b.LastName,
+                                                      Email = b.Email,
+                                                      Address = b.Address,
+                                                      IsDeleteRequested = b.IsDeleteRequested,
+                                                  }).Where(b => b.IsDeleteRequested == true)
+                                                    .ToListAsync();
+
+            return new CustomerAccountListVm
+            {
+                CustomerAccounts = accounts
+            };
         }
 
         public async Task<bool> DeleteAccount(Guid accountId)
@@ -95,7 +111,7 @@ namespace TeamA.CustomerAccounts.Repository
             {
                 if (account != null)
                 {
-                    account.IsActive = true;
+                    account.IsActive = false;
 
                     _context.CustomerAccounts.Update(account);
 
@@ -112,14 +128,14 @@ namespace TeamA.CustomerAccounts.Repository
 
         }
 
-        public async Task<bool> UpdatePurchaseAbility(Guid accountId, bool canPurchase)
+        public async Task<bool> UpdatePurchaseAbility(UpdatePurchaseAbilityVm updatedPurchaseAbility)
         {
-            var account = await _context.CustomerAccounts.Where(a => a.Id == accountId).FirstOrDefaultAsync();
+            var account = await _context.CustomerAccounts.Where(a => a.Id == updatedPurchaseAbility.AccountId).FirstOrDefaultAsync();
             try
             {
                 if (account != null)
                 {
-                    account.CanPurchase = canPurchase;
+                    account.CanPurchase = updatedPurchaseAbility.PurchaseAbility;
 
                     _context.CustomerAccounts.Update(account);
 

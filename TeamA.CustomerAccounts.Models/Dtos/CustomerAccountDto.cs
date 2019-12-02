@@ -2,7 +2,7 @@
 
 namespace TeamA.CustomerAccounts.Models
 {
-    public class CustomerAccount
+    public class CustomerAccountDto
     {
         public Guid Id { get; set; }
 

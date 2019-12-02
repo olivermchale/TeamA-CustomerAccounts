@@ -9,11 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamA.CustomerAccounts.Data
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamA.CustomerAccounts.API", "TeamA.CustomerAccounts.API\TeamA.CustomerAccounts.API.csproj", "{C0D8A9E7-9DD8-4249-9CA1-4117C93E6080}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamA.CustomerAccounts.Repository", "TeamA.CustomerAccounts.Repository\TeamA.CustomerAccounts.Repository.csproj", "{728EF669-A236-45E2-98CE-A2A559405CEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamA.CustomerAccounts.Repository", "TeamA.CustomerAccounts.Repository\TeamA.CustomerAccounts.Repository.csproj", "{728EF669-A236-45E2-98CE-A2A559405CEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamA.CustomerAccounts.Services", "TeamA.CustomerAccounts.Services\TeamA.CustomerAccounts.Services.csproj", "{365A2EE9-6CE2-4ED2-BE6A-B483EC0662E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamA.CustomerAccounts.Services", "TeamA.CustomerAccounts.Services\TeamA.CustomerAccounts.Services.csproj", "{365A2EE9-6CE2-4ED2-BE6A-B483EC0662E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamA.CustomerAccounts.Models", "TeamA.CustomerAccounts.Models\TeamA.CustomerAccounts.Models.csproj", "{244BFEEE-5E05-4689-9293-CE49AAA97245}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamA.CustomerAccounts.Models", "TeamA.CustomerAccounts.Models\TeamA.CustomerAccounts.Models.csproj", "{244BFEEE-5E05-4689-9293-CE49AAA97245}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamA.CustomerAccounts.API.Tests", "TeamA.CustomerAccounts.API.Tests\TeamA.CustomerAccounts.API.Tests.csproj", "{2184D540-E5BD-400C-82D3-7EF112BE5F28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamA.CustomerAccounts.Repository.Tests", "TeamA.CustomerAccounts.Repository.Tests\TeamA.CustomerAccounts.Repository.Tests.csproj", "{11482351-2191-443D-A35F-946EEC449286}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{244BFEEE-5E05-4689-9293-CE49AAA97245}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{244BFEEE-5E05-4689-9293-CE49AAA97245}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{244BFEEE-5E05-4689-9293-CE49AAA97245}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2184D540-E5BD-400C-82D3-7EF112BE5F28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2184D540-E5BD-400C-82D3-7EF112BE5F28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2184D540-E5BD-400C-82D3-7EF112BE5F28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2184D540-E5BD-400C-82D3-7EF112BE5F28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11482351-2191-443D-A35F-946EEC449286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11482351-2191-443D-A35F-946EEC449286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11482351-2191-443D-A35F-946EEC449286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11482351-2191-443D-A35F-946EEC449286}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

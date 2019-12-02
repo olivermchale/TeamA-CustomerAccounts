@@ -16,9 +16,9 @@ namespace TeamA.CustomerAccounts.Data
                 return;
             }
 
-            var accounts = new List<CustomerAccount>
+            var accounts = new List<CustomerAccountDto>
             {
-                new CustomerAccount
+                new CustomerAccountDto
                 {
                     FirstName = "Oliver",
                     LastName = "McHale",
@@ -28,7 +28,7 @@ namespace TeamA.CustomerAccounts.Data
                     DOB = new DateTime(1998, 6, 24),
                     PhoneNumber = "0772092490201"
                 },
-                new CustomerAccount
+                new CustomerAccountDto
                 {
                     FirstName = "Stevie",
                     LastName = "Cartmail",
@@ -38,7 +38,7 @@ namespace TeamA.CustomerAccounts.Data
                     DOB = new DateTime(1998, 6, 24),
                     PhoneNumber = "0772092490201"
                 },
-                new CustomerAccount
+                new CustomerAccountDto
                 {
                     FirstName = "Kyle",
                     LastName = "Spence",
@@ -48,7 +48,7 @@ namespace TeamA.CustomerAccounts.Data
                     DOB = new DateTime(1998, 6, 24),
                     PhoneNumber = "0772092490201"
                 },
-                new CustomerAccount
+                new CustomerAccountDto
                 {
                     FirstName = "Oliver",
                     LastName = "McBurney",
@@ -58,7 +58,7 @@ namespace TeamA.CustomerAccounts.Data
                     DOB = new DateTime(1998, 6, 24),
                     PhoneNumber = "0772092490201"
                 },
-                new CustomerAccount
+                new CustomerAccountDto
                 {
                     FirstName = "Craig",
                     LastName = "Martin",

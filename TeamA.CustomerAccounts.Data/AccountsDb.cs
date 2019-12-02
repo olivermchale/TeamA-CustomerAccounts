@@ -6,7 +6,7 @@ namespace TeamA.CustomerAccounts.Data
 {
     public class AccountsDb : DbContext
     {
-        public DbSet<CustomerAccount> CustomerAccounts { get; set; }
+        public DbSet<CustomerAccountDto> CustomerAccounts { get; set; }
 
         public AccountsDb(DbContextOptions<AccountsDb> options) : base(options)
         {
@@ -21,7 +21,7 @@ namespace TeamA.CustomerAccounts.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<CustomerAccount>(x =>
+            modelBuilder.Entity<CustomerAccountDto>(x =>
             {
                 x.Property(c => c.FirstName).IsRequired();
                 x.Property(c => c.LastName).IsRequired();
