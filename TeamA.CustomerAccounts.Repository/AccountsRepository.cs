@@ -30,6 +30,7 @@ namespace TeamA.CustomerAccounts.Repository
                                                         Email = b.Email,
                                                         Address = b.Address,
                                                         IsDeleteRequested = b.IsDeleteRequested,
+                                                        IsActive = b.IsActive
                                                     })
                                                     .ToListAsync();
 

@@ -26,7 +26,8 @@ namespace TeamA.CustomerAccounts.Data
                     Address = "Teesside University",
                     Postcode = "TS1 OLI",
                     DOB = new DateTime(1998, 6, 24),
-                    PhoneNumber = "0772092490201"
+                    PhoneNumber = "0772092490201",
+                    IsActive = true,
                 },
                 new CustomerAccountDto
                 {
@@ -36,7 +37,8 @@ namespace TeamA.CustomerAccounts.Data
                     Address = "Teesside University",
                     Postcode = "TS1 STE",
                     DOB = new DateTime(1998, 6, 24),
-                    PhoneNumber = "0772092490201"
+                    PhoneNumber = "0772092490201",
+                    IsActive = true,
                 },
                 new CustomerAccountDto
                 {
@@ -46,7 +48,8 @@ namespace TeamA.CustomerAccounts.Data
                     Address = "Teesside University",
                     Postcode = "TS1 STE",
                     DOB = new DateTime(1998, 6, 24),
-                    PhoneNumber = "0772092490201"
+                    PhoneNumber = "0772092490201",
+                    IsActive = true,
                 },
                 new CustomerAccountDto
                 {
@@ -56,7 +59,8 @@ namespace TeamA.CustomerAccounts.Data
                     Address = "Teesside University",
                     Postcode = "TS1 STE",
                     DOB = new DateTime(1998, 6, 24),
-                    PhoneNumber = "0772092490201"
+                    PhoneNumber = "0772092490201",
+                    IsActive = true,
                 },
                 new CustomerAccountDto
                 {
@@ -66,7 +70,8 @@ namespace TeamA.CustomerAccounts.Data
                     Address = "Teesside University",
                     Postcode = "TS1 STE",
                     DOB = new DateTime(1998, 6, 24),
-                    PhoneNumber = "0772092490201"
+                    PhoneNumber = "0772092490201",
+                    IsActive = true,
                 },
             };
             accounts.ForEach(a => context.CustomerAccounts.Add(a));
