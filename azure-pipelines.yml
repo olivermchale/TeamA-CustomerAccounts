@@ -28,9 +28,12 @@ stages:
         platform: '**/**Tests/*csproj'
         arguments: '--configuration $(buildConfiguration)'
     - task: Docker@2
-      displayName: Build an image
+      displayName: Build an image and push to container registry
       inputs:
-        command: build
+        command: buildAndPush
+        repository: teamacustomeraccounts
         dockerfile: '**/Dockerfile'
+        containerRegistry: teamacustomeraccounts
         tags: |
-          $(tag)
+          $(Build.BuildId)
+          latest
