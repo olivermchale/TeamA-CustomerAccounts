@@ -41,7 +41,7 @@ namespace TeamA.CustomerAccounts.API
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<AccountsDb>(options => options.UseSqlServer(
-                Configuration.GetConnectionString("CustomerAccounts")));
+                Configuration.GetConnectionString("CustomerAccountsDb")));
 
             services.AddScoped<IAccountsService, AccountsRepository>();
         }
