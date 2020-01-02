@@ -30,7 +30,8 @@ namespace Tests
                     Address = "Teesside University",
                     Postcode = "TS1 OLI",
                     DOB = new DateTime(1998, 6, 24),
-                    PhoneNumber = "0772092490201"
+                    PhoneNumber = "0772092490201",
+                    IsActive = true
                 },
                 new CustomerAccountDto
                 {
@@ -41,7 +42,8 @@ namespace Tests
                     Address = "Teesside University",
                     Postcode = "TS1 STE",
                     DOB = new DateTime(1998, 6, 24),
-                    PhoneNumber = "0772092490201"
+                    PhoneNumber = "0772092490201",
+                    IsActive = true
                 },
                 new CustomerAccountDto
                 {
@@ -52,7 +54,8 @@ namespace Tests
                     Address = "Teesside University",
                     Postcode = "TS1 STE",
                     DOB = new DateTime(1998, 6, 24),
-                    PhoneNumber = "0772092490201"
+                    PhoneNumber = "0772092490201",
+                    IsActive = true
                 },
                 new CustomerAccountDto
                 {
@@ -64,7 +67,8 @@ namespace Tests
                     Postcode = "TS1 STE",
                     DOB = new DateTime(1998, 6, 24),
                     PhoneNumber = "0772092490201",
-                    IsDeleteRequested = true
+                    IsDeleteRequested = true,
+                    IsActive = true
                 },
                 new CustomerAccountDto
                 {
@@ -75,7 +79,8 @@ namespace Tests
                     Address = "Teesside University",
                     Postcode = "TS1 STE",
                     DOB = new DateTime(1998, 6, 24),
-                    PhoneNumber = "0772092490201"
+                    PhoneNumber = "0772092490201",
+                    IsActive = true
                 },
             };
             _accountsService = new AccountsRepository(GetMockContextWithSeedData());

@@ -17,5 +17,7 @@ namespace TeamA.CustomerAccounts.Models.ViewModels
         public string Address { get; set; }
 
         public bool IsDeleteRequested { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }
