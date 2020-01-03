@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using TeamA.CustomerAccounts.Data;
 using TeamA.CustomerAccounts.Models;
 using TeamA.CustomerAccounts.Models.ViewModels;
@@ -21,16 +22,18 @@ namespace TeamA.CustomerAccounts.API.Controllers
     {
 
         private readonly IAccountsService _accountsService;
-
-        public AccountsController(IAccountsService accountsService)
+        private readonly ILogger<AccountsController> _logger;
+        public AccountsController(IAccountsService accountsService, ILogger<AccountsController> logger)
         {
             _accountsService = accountsService;
+            _logger = logger;
         }
 
         [Authorize(Policy="Customer")]
         [HttpGet("getCustomers")]
         public async Task<IActionResult> GetAccounts()
         {
+            _logger.LogInformation("Getting all customer accounts");
             var accounts = await _accountsService.GetAccounts();
             if(accounts != null)
             {

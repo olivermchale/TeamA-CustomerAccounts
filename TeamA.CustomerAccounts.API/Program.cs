@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 using TeamA.CustomerAccounts.Data;
 
 namespace TeamA.CustomerAccounts.API
@@ -38,6 +39,16 @@ namespace TeamA.CustomerAccounts.API
         }
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureLogging((hostingContext, logging) =>
+                {
+                    // Requires `using Microsoft.Extensions.Logging;`
+                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    logging.AddConsole();
+                    logging.AddDebug();
+                    logging.AddEventSourceLogger();
+                    // Add nlog as a logging option
+                    logging.AddNLog();
+                })
                 .UseStartup<Startup>();
     }
 }
