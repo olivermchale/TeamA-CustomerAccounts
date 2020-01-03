@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -22,12 +23,14 @@ namespace Tests
         private UpdatePurchaseAbilityVm _stubDisableUpdatePurchaseAbilityVm;
         private UpdateUserVm _stubUpdateUserVm;
         private CustomerAccountDto _stubCustomerAccountDto;
+        private Mock<ILogger<AccountsController>> _stubLogger;
 
         [SetUp]
         public void Setup()
         {
             _mockAccountsService = new Mock<IAccountsService>();
-            _accountsController = new AccountsController(_mockAccountsService.Object);
+            _stubLogger = new Mock<ILogger<AccountsController>>();
+            _accountsController = new AccountsController(_mockAccountsService.Object, _stubLogger.Object);
             _stubCustomerAccountDetail = new CustomerAccountDetailVm
             {
                 Id = new Guid("58dfa3d3-83e3-490f-97f4-3290037ea365"),
@@ -97,7 +100,6 @@ namespace Tests
                 PhoneNumber = "01642652413",
                 IsDeleteRequested = false
             };
-
         }
 
         [Test]
