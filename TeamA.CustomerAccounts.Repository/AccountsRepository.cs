@@ -179,5 +179,22 @@ namespace TeamA.CustomerAccounts.Repository
             return false;
         }
 
+        public async Task<bool> CreateAccount(CustomerAccountDto customerAccount)
+        {
+            try
+            {
+                if(customerAccount != null)
+                {
+                     _context.CustomerAccounts.Add(customerAccount);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }           
+            }
+            catch (Exception e)
+            {
+                // todo: exception handling
+            }
+            return false;
+        }
     }
 }

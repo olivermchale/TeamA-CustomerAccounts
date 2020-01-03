@@ -15,5 +15,6 @@ namespace TeamA.CustomerAccounts.Services
         Task<bool> DeleteAccount(Guid accountId);
         Task<bool> UpdatePurchaseAbility(UpdatePurchaseAbilityVm updatePurchaseAbilityVm);
         Task<bool> UpdateUser(UpdateUserVm updatedUserVm);
+        Task<bool> CreateAccount(CustomerAccountDto customerAccount);
     }
 }

@@ -260,5 +260,33 @@ namespace Tests
             Assert.AreEqual(updatedAccount.PhoneNumber, "UpdatedPhoneNumber");
 
         }
+        
+        [Test]
+        public async Task CreateAccount_Valid()
+        {
+            // Arrange
+            var account = _stubAccounts[0];
+            account.Id = Guid.NewGuid();
+            account.LastName = "Test";
+
+            // Act
+            var success = await _accountsService.CreateAccount(account);
+
+            //Assert
+            Assert.IsNotNull(success);
+            Assert.IsTrue(success);
+        }
+
+        [Test]
+        public async Task CreateAccount_Null_Fails()
+        {
+            // Arrange
+            // Act
+            var success = await _accountsService.CreateAccount(null);
+
+            // Assert
+            Assert.IsNotNull(success);
+            Assert.IsFalse(success);
+        }
     }
 }

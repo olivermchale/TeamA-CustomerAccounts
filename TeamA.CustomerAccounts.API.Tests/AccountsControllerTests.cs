@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TeamA.CustomerAccounts.API.Controllers;
+using TeamA.CustomerAccounts.Models;
 using TeamA.CustomerAccounts.Models.ViewModels;
 using TeamA.CustomerAccounts.Services;
 
@@ -20,8 +21,7 @@ namespace Tests
         private UpdatePurchaseAbilityVm _stubEnableUpdatePurchaseAbilityVm;
         private UpdatePurchaseAbilityVm _stubDisableUpdatePurchaseAbilityVm;
         private UpdateUserVm _stubUpdateUserVm;
-
-
+        private CustomerAccountDto _stubCustomerAccountDto;
 
         [SetUp]
         public void Setup()
@@ -81,6 +81,21 @@ namespace Tests
                 LastName = "Test",
                 PhoneNumber = "230954822412",
                 Postcode = "T3ST 101"
+            };
+            _stubCustomerAccountDto = new CustomerAccountDto
+            {
+                Id = new Guid("58dfa3d3-83e3-490f-97f4-3290037ea365"),
+                FirstName = "Oliver",
+                LastName = "McHale",
+                Address = "Test Drive",
+                Postcode = "TS23 TST",
+                DOB = new DateTime(),
+                IsActive = true,
+                CanPurchase = true,
+                LoggedOnAt = new DateTime(),
+                Email = "Oliver@Unit.Test.com",
+                PhoneNumber = "01642652413",
+                IsDeleteRequested = false
             };
 
         }
@@ -328,6 +343,47 @@ namespace Tests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(result.StatusCode, 500);
+        }
+
+        [Test]
+        public async Task CreateCustomer_Valid_Success()
+        {
+            // Arrange
+            _mockAccountsService.Setup(c => c.CreateAccount(It.IsAny<CustomerAccountDto>()))
+                .ReturnsAsync(true);
+
+            // Act
+            var result = await _accountsController.CreateAccount(_stubCustomerAccountDto) as OkObjectResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(true, result.Value);
+            Assert.AreEqual(200, result.StatusCode);
+            _mockAccountsService.Verify(m => m.CreateAccount(It.IsAny<CustomerAccountDto>()), Times.Once);
+        }
+
+        [Test]
+        public async Task CreateCustomer_Null_Fails()
+        {
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(async () => await _accountsController.CreateAccount(null));
+            _mockAccountsService.Verify(m => m.CreateAccount(It.IsAny<CustomerAccountDto>()), Times.Never);
+        }
+
+        [Test]
+        public async Task CreateCustomer_DbFails_500()
+        {
+            // Arrange
+            _mockAccountsService.Setup(c => c.CreateAccount(It.IsAny<CustomerAccountDto>()))
+                .ReturnsAsync(false);
+
+            // Act
+            var result = await _accountsController.CreateAccount(_stubCustomerAccountDto) as StatusCodeResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(result.StatusCode, 500);
+            _mockAccountsService.Verify(m => m.CreateAccount(It.IsAny<CustomerAccountDto>()), Times.Once);
         }
 
 

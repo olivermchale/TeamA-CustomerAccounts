@@ -46,8 +46,27 @@ namespace TeamA.CustomerAccounts.API.Controllers
                 throw new ArgumentNullException(nameof(accountId));
             }
             var account = await _accountsService.GetAccount(accountId);
+            if(account != null)
+            {
+                return Ok(account);
+            }
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
 
-            return Ok(account);
+        }
+
+        [HttpPost("createCustomerAccount")]
+        public async Task<IActionResult> CreateAccount(CustomerAccountDto customerAccount)
+        {
+            if(customerAccount == null)
+            {
+                throw new ArgumentException(nameof(customerAccount));
+            }
+            var success = await _accountsService.CreateAccount(customerAccount);
+            if(success)
+            {
+                return Ok(success);
+            }
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
 
         [HttpPut("requestAccountDelete")]
@@ -77,7 +96,6 @@ namespace TeamA.CustomerAccounts.API.Controllers
             {
                 return Ok(accounts);
             }
-
             return NotFound();
         }
 
@@ -91,8 +109,6 @@ namespace TeamA.CustomerAccounts.API.Controllers
             {
                 return Ok(true);
             }
-
-            //todo: proper error code?
             return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
 
