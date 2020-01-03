@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,7 @@ namespace TeamA.CustomerAccounts.API.Controllers
             _accountsService = accountsService;
         }
 
+        [Authorize(Policy="Customer")]
         [HttpGet("getCustomers")]
         public async Task<IActionResult> GetAccounts()
         {
@@ -38,6 +40,7 @@ namespace TeamA.CustomerAccounts.API.Controllers
 
         }
 
+        [Authorize(Policy = "Customer")]
         [HttpGet("getCustomer")]
         public async Task<IActionResult> GetAccount(Guid accountId)
         {
@@ -54,6 +57,7 @@ namespace TeamA.CustomerAccounts.API.Controllers
 
         }
 
+        [AllowAnonymous]
         [HttpPost("createCustomerAccount")]
         public async Task<IActionResult> CreateAccount(CustomerAccountDto customerAccount)
         {
@@ -69,6 +73,7 @@ namespace TeamA.CustomerAccounts.API.Controllers
             return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
 
+        [Authorize(Policy = "Customer")]
         [HttpPut("requestAccountDelete")]
         public async Task<IActionResult> RequestAccountDelete(Guid accountId)
         {
@@ -87,6 +92,7 @@ namespace TeamA.CustomerAccounts.API.Controllers
 
         }
 
+        [Authorize(Policy = "Staff")]
         [HttpGet("getRequestedDeletes")]
         public async Task<IActionResult> GetRequestedDeletes()
         {
@@ -99,7 +105,7 @@ namespace TeamA.CustomerAccounts.API.Controllers
             return NotFound();
         }
 
-
+        [Authorize(Policy = "Staff")]
         [HttpPut("deleteAccount")]
         public async Task<IActionResult> DeleteAccount(Guid accountId)
         {
@@ -112,6 +118,7 @@ namespace TeamA.CustomerAccounts.API.Controllers
             return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
 
+        [Authorize(Policy = "Staff")]
         [HttpPut("updatePurchaseAbility")]
         public async Task<IActionResult> UpdatePurchaseAbility(UpdatePurchaseAbilityVm updatedPurchaseAbility)
         {
@@ -125,6 +132,7 @@ namespace TeamA.CustomerAccounts.API.Controllers
             return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
 
+        [Authorize(Policy = "Customer")]
         [HttpPut("updateUser")]
         public async Task<IActionResult> UpdateUser(UpdateUserVm updatedUser)
         {
