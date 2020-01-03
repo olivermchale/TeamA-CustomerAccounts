@@ -183,7 +183,7 @@ namespace Tests
             // Arrange is done by setup, no mocking required as exception should get thrown.
 
             // Act and Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _accountsController.RequestAccountDelete(Guid.Empty));
+            Assert.ThrowsAsync<ArgumentNullException>(async () => await _accountsController.RequestAccountDelete(Guid.Empty));
         }
 
         [Test]
