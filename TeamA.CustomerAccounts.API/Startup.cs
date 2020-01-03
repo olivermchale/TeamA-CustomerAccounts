@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -44,6 +45,30 @@ namespace TeamA.CustomerAccounts.API
                 Configuration.GetConnectionString("CustomerAccountsDb")));
 
             services.AddScoped<IAccountsService, AccountsRepository>();
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            services.AddAuthentication("Bearer")
+            .AddJwtBearer("Bearer", options =>
+            {
+            options.Audience = "staff_api"; ;
+            options.Authority = "https://threeamigosauth.azurewebsites.net/";
+            });
+
+                        services.AddAuthorization(options =>
+                        {
+                            options.AddPolicy("Customer", builder =>
+                            {
+                                builder.RequireClaim("role", "Customer", "Admin", "Staff");
+                            });
+                            options.AddPolicy("Staff", builder =>
+                            {
+                                builder.RequireClaim("role", "Staff", "Admin");
+                            });
+                            options.AddPolicy("Admin", builder =>
+                            {
+                                builder.RequireClaim("role", "Admin");
+                            });
+                        });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +84,7 @@ namespace TeamA.CustomerAccounts.API
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
         }
