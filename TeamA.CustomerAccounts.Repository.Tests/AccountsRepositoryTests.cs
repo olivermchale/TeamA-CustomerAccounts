@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -15,6 +17,7 @@ namespace Tests
     {
         private IAccountsService _accountsService;
         private List<CustomerAccountDto> _stubAccounts;
+        private Mock<ILogger<AccountsRepository>> _stubLogger;
 
         [SetUp]
         public void Setup()
@@ -83,7 +86,8 @@ namespace Tests
                     IsActive = true
                 },
             };
-            _accountsService = new AccountsRepository(GetMockContextWithSeedData());
+            _stubLogger = new Mock<ILogger<AccountsRepository>>();
+            _accountsService = new AccountsRepository(GetMockContextWithSeedData(), _stubLogger.Object);
         }
 
         private AccountsDb GetMockContextWithSeedData()
