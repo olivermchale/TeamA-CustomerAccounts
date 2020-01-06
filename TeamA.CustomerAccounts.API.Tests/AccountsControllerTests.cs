@@ -23,14 +23,16 @@ namespace Tests
         private UpdatePurchaseAbilityVm _stubDisableUpdatePurchaseAbilityVm;
         private UpdateUserVm _stubUpdateUserVm;
         private CustomerAccountDto _stubCustomerAccountDto;
-        private Mock<ILogger<AccountsController>> _stubLogger;
+        private Mock<ILogger<AccountsController>> _mockLogger;
+        private Mock<IOrdersService> _mockOrdersService;
 
         [SetUp]
         public void Setup()
         {
             _mockAccountsService = new Mock<IAccountsService>();
-            _stubLogger = new Mock<ILogger<AccountsController>>();
-            _accountsController = new AccountsController(_mockAccountsService.Object, _stubLogger.Object);
+            _mockLogger = new Mock<ILogger<AccountsController>>();
+            _mockOrdersService = new Mock<IOrdersService>();
+            _accountsController = new AccountsController(_mockAccountsService.Object, _mockOrdersService.Object, _mockLogger.Object);
             _stubCustomerAccountDetail = new CustomerAccountDetailVm
             {
                 Id = new Guid("58dfa3d3-83e3-490f-97f4-3290037ea365"),

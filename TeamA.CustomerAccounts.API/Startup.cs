@@ -13,17 +13,21 @@ using Microsoft.Extensions.DependencyInjection;
 using TeamA.CustomerAccounts.Data;
 using TeamA.CustomerAccounts.Repository;
 using TeamA.CustomerAccounts.Services;
+using Polly;
 
 namespace TeamA.CustomerAccounts.API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
+
+        public IHostingEnvironment Environment;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -45,6 +49,25 @@ namespace TeamA.CustomerAccounts.API
                 Configuration.GetConnectionString("CustomerAccountsDb")));
 
             services.AddScoped<IAccountsService, AccountsRepository>();
+            if(Environment.IsDevelopment())
+            {
+                services.AddScoped<IOrdersService, OrdersServiceFake>();
+            } else
+            {
+                services.AddScoped<IOrdersService, OrdersService>();
+                var ordersServiceAddress = Configuration.GetValue<Uri>("OrdersServiceUri");
+                services.AddHttpClient<IOrdersService, OrdersService>(c =>
+                {
+                    c.BaseAddress = ordersServiceAddress;
+                    c.DefaultRequestHeaders.Accept.Clear();
+                    c.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                }).AddTransientHttpErrorPolicy(p =>
+                    p.OrResult(r => !r.IsSuccessStatusCode)
+                        .WaitAndRetryAsync(3, retry => TimeSpan.FromSeconds(Math.Pow(2, retry))))
+                        .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(3, TimeSpan.FromSeconds(30)));
+
+                
+            }
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             services.AddAuthentication("Bearer")

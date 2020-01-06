@@ -40,7 +40,7 @@ namespace TeamA.CustomerAccounts.Repository
                                           IsActive = b.IsActive
                                       })
                                         .ToListAsync();
-
+                // No need to do the is active check as this is required by another service. 
                 _logger.LogInformation("Successfully got all accounts");
                 return new CustomerAccountListVm
                 {
@@ -61,6 +61,7 @@ namespace TeamA.CustomerAccounts.Repository
             try
             {
                 return await _context.CustomerAccounts
+                                .Where(a => a.Id == accountId && a.IsActive == true)
                                 .Select(b => new CustomerAccountDetailVm
                                 {
                                     Id = b.Id,
@@ -75,7 +76,7 @@ namespace TeamA.CustomerAccounts.Repository
                                     CanPurchase = b.CanPurchase,
                                     IsActive = b.IsActive,
                                     IsDeleteRequested = b.IsDeleteRequested
-                                }).Where(a => a.Id == accountId).FirstOrDefaultAsync();
+                                }).FirstOrDefaultAsync();
             }
             catch (Exception e)
             {
@@ -90,7 +91,7 @@ namespace TeamA.CustomerAccounts.Repository
             _logger.LogInformation("Requesting account delete for account with id: " + accountId);
             try
             {
-                var account = await _context.CustomerAccounts.Where(a => a.Id == accountId).FirstOrDefaultAsync();
+                var account = await _context.CustomerAccounts.Where(a => a.Id == accountId && a.IsActive == true).FirstOrDefaultAsync();
 
                 if (account != null)
                 {
@@ -118,6 +119,7 @@ namespace TeamA.CustomerAccounts.Repository
             try
             {
                 var accounts = await _context.CustomerAccounts
+                                      .Where(b => b.IsDeleteRequested == true && b.IsActive == true)
                                       .Select(b => new CustomerAccountListItemVm
                                       {
                                           Id = b.Id,
@@ -126,7 +128,7 @@ namespace TeamA.CustomerAccounts.Repository
                                           Email = b.Email,
                                           Address = b.Address,
                                           IsDeleteRequested = b.IsDeleteRequested,
-                                      }).Where(b => b.IsDeleteRequested == true)
+                                      })
                                         .ToListAsync();
 
                 return new CustomerAccountListVm
@@ -146,7 +148,7 @@ namespace TeamA.CustomerAccounts.Repository
             _logger.LogInformation("Deleting account with id: " + accountId);
             try
             {
-                var account = await _context.CustomerAccounts.Where(a => a.Id == accountId).FirstOrDefaultAsync();
+                var account = await _context.CustomerAccounts.Where(a => a.Id == accountId && a.IsActive == true).FirstOrDefaultAsync();
 
                 if (account != null)
                 {
@@ -172,7 +174,7 @@ namespace TeamA.CustomerAccounts.Repository
         public async Task<bool> UpdatePurchaseAbility(UpdatePurchaseAbilityVm updatedPurchaseAbility)
         {
             _logger.LogInformation("Updating purchase ability ");
-            var account = await _context.CustomerAccounts.Where(a => a.Id == updatedPurchaseAbility.AccountId).FirstOrDefaultAsync();
+            var account = await _context.CustomerAccounts.Where(a => a.Id == updatedPurchaseAbility.AccountId && a.IsActive == true).FirstOrDefaultAsync();
             try
             {
                 if (account != null)
@@ -199,7 +201,7 @@ namespace TeamA.CustomerAccounts.Repository
         public async Task<bool> UpdateUser(UpdateUserVm updatedUser)
         {
             _logger.LogInformation("Updating user with id: " + updatedUser.Id);
-            var account = await _context.CustomerAccounts.Where(c => c.Id == updatedUser.Id).FirstOrDefaultAsync();
+            var account = await _context.CustomerAccounts.Where(c => c.Id == updatedUser.Id && c.IsActive == true).FirstOrDefaultAsync();
             try
             {
                 if (account != null)
@@ -225,7 +227,7 @@ namespace TeamA.CustomerAccounts.Repository
 
         public async Task<bool> CreateAccount(CustomerAccountDto customerAccount)
         {
-            _logger.LogInformation("Creating account with id: " + customerAccount.Id);
+            _logger.LogInformation("Creating new customer account");
             try
             {
                 if(customerAccount != null)

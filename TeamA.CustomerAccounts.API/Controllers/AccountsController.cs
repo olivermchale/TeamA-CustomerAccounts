@@ -22,13 +22,19 @@ namespace TeamA.CustomerAccounts.API.Controllers
     {
 
         private readonly IAccountsService _accountsService;
+        private readonly IOrdersService _ordersService;
         private readonly ILogger<AccountsController> _logger;
-        public AccountsController(IAccountsService accountsService, ILogger<AccountsController> logger)
+        public AccountsController(IAccountsService accountsService, IOrdersService ordersService, ILogger<AccountsController> logger)
         {
             _accountsService = accountsService;
+            _ordersService = ordersService;
             _logger = logger;
         }
 
+        /// <summary>
+        /// Gets all customer accounts from
+        /// </summary>
+        /// <returns>A list of customer account</returns>
         [Authorize(Policy="Customer")]
         [HttpGet("getCustomers")]
         public async Task<IActionResult> GetAccounts()
@@ -43,6 +49,11 @@ namespace TeamA.CustomerAccounts.API.Controllers
 
         }
 
+        /// <summary>
+        /// Gets a customer account matching the passed ID.
+        /// </summary>
+        /// <param name="accountId">The customer account ID</param>
+        /// <returns>A customer account with the passed ID</returns>
         [Authorize(Policy = "Customer")]
         [HttpGet("getCustomer")]
         public async Task<IActionResult> GetAccount(Guid accountId)
@@ -64,6 +75,11 @@ namespace TeamA.CustomerAccounts.API.Controllers
 
         }
 
+        /// <summary>
+        /// Creates a new customer account
+        /// </summary>
+        /// <param name="customerAccount">The customer account information</param>
+        /// <returns>A 200 OK object with a true value indicating success, or 500 indicating failure.</returns>
         [AllowAnonymous]
         [HttpPost("createCustomerAccount")]
         public async Task<IActionResult> CreateAccount(CustomerAccountDto customerAccount)
@@ -84,6 +100,11 @@ namespace TeamA.CustomerAccounts.API.Controllers
             return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
 
+        /// <summary>
+        /// Requests a deletion for an account given an Id.
+        /// </summary>
+        /// <param name="accountId">The account Id</param>
+        /// <returns>A 200 OK object with a true value indicating success, or a 500 indicating failure</returns>
         [Authorize(Policy = "Customer")]
         [HttpPut("requestAccountDelete")]
         public async Task<IActionResult> RequestAccountDelete(Guid accountId)
@@ -105,6 +126,10 @@ namespace TeamA.CustomerAccounts.API.Controllers
 
         }
 
+        /// <summary>
+        /// Gets all requested deletions
+        /// </summary>
+        /// <returns>A list of account details where the user has requested a deletion of their account.</returns>
         [Authorize(Policy = "Staff")]
         [HttpGet("getRequestedDeletes")]
         public async Task<IActionResult> GetRequestedDeletes()
@@ -121,6 +146,11 @@ namespace TeamA.CustomerAccounts.API.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// Actual deletion for an account given an Id
+        /// </summary>
+        /// <param name="accountId">The account Id</param>
+        /// <returns>A  200 ok object cwith a true value when successful, otherwise, a 500 error indicating failure.</returns>
         [Authorize(Policy = "Staff")]
         [HttpPut("deleteAccount")]
         public async Task<IActionResult> DeleteAccount(Guid accountId)
@@ -137,6 +167,11 @@ namespace TeamA.CustomerAccounts.API.Controllers
             return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
 
+        /// <summary>
+        /// Updates the purchase ability of a given customer account
+        /// </summary>
+        /// <param name="updatedPurchaseAbility">The vm containing the user ID and the updated purchse ability</param>
+        /// <returns>A 200 OK object with a true value indicating success, or a 500 indicating false. </returns>
         [Authorize(Policy = "Staff")]
         [HttpPut("updatePurchaseAbility")]
         public async Task<IActionResult> UpdatePurchaseAbility(UpdatePurchaseAbilityVm updatedPurchaseAbility)
@@ -157,6 +192,11 @@ namespace TeamA.CustomerAccounts.API.Controllers
             return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
 
+        /// <summary>
+        /// Updates a user given the current user Id and the requested update information
+        /// </summary>
+        /// <param name="updatedUser">An Object containing the current user Id and the requested update information</param>
+        /// <returns>A 200 OK object with a true value indicating success, or a 500 indicating false. </returns>
         [Authorize(Policy = "Customer")]
         [HttpPut("updateUser")]
         public async Task<IActionResult> UpdateUser(UpdateUserVm updatedUser)
@@ -165,6 +205,7 @@ namespace TeamA.CustomerAccounts.API.Controllers
             if (updatedUser == null)
             {
                 _logger.LogError("Failed to update user due to invalid or no user information: " + updatedUser);
+                throw new ArgumentException(nameof(updatedUser));
             }
             var success = await _accountsService.UpdateUser(updatedUser);
             if(success)
@@ -173,6 +214,27 @@ namespace TeamA.CustomerAccounts.API.Controllers
                 return Ok(true);
             }
             _logger.LogError("Failed to update user with information: " + updatedUser);
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+        }
+
+        [Authorize(Policy = "Customer")]
+        [HttpGet("getOrdersForCustomer")]
+        public async Task<IActionResult> GetOrdersForCustomer(Guid customerId)
+        {
+            var token = HttpContext.Request.Headers["Authorization"].ToString();
+            _logger.LogInformation("Getting orders for customer with id: " + customerId);
+            if (customerId == null)
+            {
+                _logger.LogError("Failed to update user due to invalid or no user id: " + customerId);
+                throw new ArgumentException(nameof(customerId));
+            }
+            var orders = await _ordersService.GetOrdersByCustomer(customerId, token);
+            if(orders != null)
+            {
+                _logger.LogInformation("Successfully got orders for customer: " + customerId);
+                return Ok(orders);
+            }
+            _logger.LogError("Failed to get orders for customer: " + customerId);
             return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
     }

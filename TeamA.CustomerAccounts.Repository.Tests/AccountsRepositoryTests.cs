@@ -160,7 +160,7 @@ namespace Tests
             // Assert
             Assert.IsTrue(success);
 
-            // Now we need to check that it actually is deleted from the mock
+            // Now we need to check that it actually is deleted from the mockdb
             var updatedAccount = await _accountsService.GetAccount(Guid.Parse("90b68827-300d-4e46-8004-db064ccd98d5"));
             Assert.IsTrue(updatedAccount.IsDeleteRequested);
         }
@@ -208,10 +208,12 @@ namespace Tests
             Assert.IsTrue(account.IsActive);
             // Act
             var success = await _accountsService.DeleteAccount(Guid.Parse("760ee42b-bd47-46eb-8fd3-d5d02760dd6c"));
+            Assert.IsTrue(success);
 
+            // Should not get account as it is now deleted
             var deletedAccount = await _accountsService.GetAccount(Guid.Parse("760ee42b-bd47-46eb-8fd3-d5d02760dd6c"));
             // Assert
-            Assert.IsFalse(deletedAccount.IsActive);
+            Assert.IsNull(deletedAccount);
         }
 
         [Test]
