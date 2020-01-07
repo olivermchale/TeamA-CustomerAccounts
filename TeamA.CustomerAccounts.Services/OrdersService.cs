@@ -23,6 +23,7 @@ namespace TeamA.CustomerAccounts.Services
         {
             try
             {
+                _client.DefaultRequestHeaders.Add("Authorization", token);
                 _logger.LogInformation("Getting orders by customer id:" + customerId);
                 using (HttpResponseMessage response = await _client.GetAsync("api/orders/customer/" + customerId))
                 {
