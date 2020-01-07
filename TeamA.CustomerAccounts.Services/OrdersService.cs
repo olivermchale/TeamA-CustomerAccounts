@@ -11,6 +11,7 @@ namespace TeamA.CustomerAccounts.Services
 {
     public class OrdersService : IOrdersService
     {
+        // Demonstrate Deployment
         private readonly HttpClient _client;
         private readonly ILogger<OrdersService> _logger;
         public OrdersService(HttpClient client, ILogger<OrdersService> logger)
